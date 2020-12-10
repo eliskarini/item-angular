@@ -104,14 +104,6 @@ export class OrderService {
         totalPrice: 0
       };
     }
-
-    order.items.forEach((item, itemIndex) => {
-      this.itemList.forEach((data, dataIndex) => {
-        if (item.name === data.name) {
-          order.items[itemIndex] = this.itemList[dataIndex];
-        }
-      });
-    });
   
     this.updateItemsFormArray();
 
@@ -162,6 +154,14 @@ export class OrderService {
           category: [], name: [], price: ['', Validators.min(0)]
         })
       );
+    })
+  }
+
+  handleItemChange(item) {
+    this.itemList.forEach(itemFromList => {
+      if (item.name === itemFromList.name) {
+        item.price = itemFromList.price;
+      }
     })
   }
 
