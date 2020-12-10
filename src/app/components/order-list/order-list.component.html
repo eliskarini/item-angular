@@ -1,0 +1,71 @@
+<div class="jumbotron text-center">
+    <h1>Linusu Tech Shop</h1>
+    <p>Welcome to the best tech shop in town! You can buy any PC part you want as long as you have money. But remember kids, don't drop your PC component!</p>
+</div>
+<div class="container">
+    <div><button class="btn btn-primary" (click)="orderService.open(content)"><span class="mdi mdi-cart-outline"></span> Add New Order</button></div>
+    <hr>
+    <order-item *ngFor="let order of orders; let index = index" [order]="order" [modalTemplate]="content"></order-item>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{orderService.modalTitle}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body" *ngIf="orderService.activeOrder">
+        <form [formGroup]="orderForm" class="mx-2">
+            <div class="form-group">
+                <label>Customer name</label>
+                <input formControlName="customerName" required [(ngModel)]="orderService.activeOrder.customerName" class="w-100 my-2 p-2" type="text" placeholder="Customer name*">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input formControlName="email" required [(ngModel)]="orderService.activeOrder.email" class="w-100 my-2 p-2" type="text" placeholder="Email*">
+            </div>
+            <div formArrayName="items">
+                <div *ngFor="let item of orderService.activeOrder.items; let index = index" class="my-2">
+                    <div formGroupName="{{index}}" class="form-row">
+                        <div class="form-group col">
+                            <label>Category</label>
+                            <select formControlName="category" required name="selectedCategory" class="form-control" [(ngModel)]="item.category">
+                                <option value="">Please select</option>
+                                <option *ngFor="let category of orderService.categories" value="{{category}}">{{category}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col">
+                            <label>Item</label>
+                            <select formControlName="name" name="selectedItem" class="form-control" [(ngModel)]="item">
+                                <option value="">Please select</option>
+                                <option *ngFor="let partItem of orderService.getItemByCategory(item.category)" 
+                                        [ngValue]="partItem">{{partItem.name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col">
+                            <label>Price</label>
+                            <div>
+                                <input class="w-100" type="text" disabled value="${{ item.price }}">
+                            </div>
+                        </div>
+                    
+                        <div class="form-group col d-flex align-items-end pb-1">
+                            <div>
+                                <button *ngIf="orderService.activeOrder.items.length > 1" 
+                                    (click)="orderService.removeItemFromOrder(orderService.activeOrder, index)"
+                                    class="btn btn-sm btn-danger">X</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-sm btn-primary" (click)="orderService.addItemToOrder(orderService.activeOrder)">+</button>
+        </form> 
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger m-2" (click)="modal.dismiss('Cancel click')">CANCEL</button>
+        <button type="button" class="btn btn-primary m-2" (click)="modal.close('Save click')" [disabled]="orderForm.status == 'INVALID'">SUBMIT</button>
+    </div>
+</ng-template>
