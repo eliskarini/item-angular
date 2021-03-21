@@ -5,7 +5,7 @@
 <div class="container">
     <div><button class="btn btn-primary" (click)="orderService.open(content)"><span class="mdi mdi-cart-outline"></span> Add New Order</button></div>
     <hr>
-    <order-item *ngFor="let order of orders; let index = index" [order]="order" [modalTemplate]="content"></order-item>
+    <order-item *ngFor="let order of orders; let index = index" [order]="order" [modalTemplate]="content" [deleteIndex]="index"></order-item>
 </div>
 
 <ng-template #content let-modal>
@@ -38,7 +38,7 @@
                         </div>
                         <div class="form-group col">
                             <label>Item</label>
-                            <select formControlName="name" name="selectedItem" class="form-control" [(ngModel)]="item.name" (change)="orderService.handleItemChange(item)">
+                            <select formControlName="name" required name="selectedItem" class="form-control" [(ngModel)]="item.name" (change)="orderService.handleItemChange(item)">
                                 <option value="">Please select</option>
                                 <option *ngFor="let partItem of orderService.getItemByCategory(item.category)" 
                                         [ngValue]="partItem.name">{{partItem.name}}</option>

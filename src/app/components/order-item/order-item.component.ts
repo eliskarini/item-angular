@@ -7,10 +7,11 @@ import { OrderService } from 'src/app/services/order.service';
   styleUrls: ['./order-item.component.css']
 })
 export class OrderItemComponent implements OnInit {
-  @Input() order: object;
+  @Input() order: any;
   @Input() modalTemplate: ElementRef;
+  @Input() deleteIndex: number;
 
-  constructor(private orderService: OrderService) { }
+  constructor(public orderService: OrderService) { }
 
   ngOnInit() {
   }

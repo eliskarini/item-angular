@@ -9,7 +9,7 @@ import { OrderService } from 'src/app/services/order.service'
 })
 export class OrderListComponent implements OnInit {
   orderForm = this.orderService.orderForm;
-  constructor(private orderService: OrderService) { }
+  constructor(public orderService: OrderService) { }
 
   orders = this.orderService.orders;
 

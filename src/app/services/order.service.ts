@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Order } from '../interfaces/order';
 import { Item } from '../interfaces/order';
@@ -85,7 +85,7 @@ export class OrderService {
     return this.itemList.filter((item) => item.category === category);
   }
 
-  open(content, order) {
+  open(content, order?) {
     if (order) {
       this.modalTitle = 'Edit Order';
       this.activeOrder = order;
